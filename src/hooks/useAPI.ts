@@ -1,6 +1,8 @@
 import { API_URL } from '@src/config';
 import Book from '@src/models/Book';
-import { CreateBookForm } from '@src/models/Forms';
+import { CreateBookForm, CreateCardForm } from '@src/models/Forms';
+import Card from '@src/models/Card';
+import Borrow from '@src/models/Borrow';
 
 function useAPI() {
 
@@ -48,29 +50,46 @@ function useAPI() {
       get: async (cardNumber: string) => {
 
       },
-      getMany: () => {
-
+      getMany: async () => {
+        const res = await callAPI('/card');
+        const parsedRes = await res.json();
+        if (!res.ok) throw parsedRes;
+        return parsedRes as Card[];
       },
       update: () => {
 
       },
-      create: () => {
-
+      create: async (data: CreateCardForm) => {
+        const req = new FormData();
+        req.append('department', data.department);
+        req.append('name', data.name);
+        req.append('type', data.type);
+        const res = await callAPI('/card', 'POST', req);
+        const parsedRes = await res.json();
+        if (!res.ok) throw parsedRes;
+        return parsedRes as Card;
+      },
+      delete: async (cardNumber: string) => {
+        const res = await callAPI(`/book/${cardNumber}`, 'DELETE');
+        if (!res.ok) throw await res.json();
       }
     },
     borrow: {
       get: async (uuid: string) => {
 
       },
-      getMany: () => {
-
+      getMany: async () => {
+        const res = await callAPI('/borrow');
+        const parsedRes = await res.json();
+        if (!res.ok) throw parsedRes;
+        return parsedRes as Borrow[];
       },
       update: () => {
 
       },
       create: () => {
 
-      }
+      },
     }
   };
 }

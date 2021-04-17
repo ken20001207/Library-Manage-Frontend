@@ -68,7 +68,6 @@ module.exports = {
     },
     plugins: [
         new CheckerPlugin(),
-        new CopyPlugin({patterns: [{from: './public', to: './'}]}),
         new HtmlWebpackPlugin({template: 'index.html'}),
     ],
     externals: {

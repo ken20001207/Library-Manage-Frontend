@@ -23,7 +23,9 @@ export interface UpdateBookForm {
 }
 
 export interface CreateCardForm {
-
+  name: string
+  department: string
+  type: string
 }
 
 export interface UpdateCardForm {
