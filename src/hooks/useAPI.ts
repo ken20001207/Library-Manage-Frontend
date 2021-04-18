@@ -1,8 +1,12 @@
 import { API_URL } from '@src/config';
 import Book from '@src/models/Book';
-import { CreateBookForm, CreateCardForm } from '@src/models/Forms';
+import {
+  BorrowBookForm,
+  CreateBookForm,
+  CreateCardForm
+} from '@src/models/Forms';
 import Card from '@src/models/Card';
-import Borrow from '@src/models/Borrow';
+import Borrow, { parseBorrow } from '@src/models/Borrow';
 
 function useAPI() {
 
@@ -13,9 +17,6 @@ function useAPI() {
 
   return {
     book: {
-      get: async (bookNumber: string) => {
-
-      },
       getMany: async () => {
         const res = await callAPI('/book');
         const parsedRes = await res.json();
@@ -47,9 +48,6 @@ function useAPI() {
       }
     },
     card: {
-      get: async (cardNumber: string) => {
-
-      },
       getMany: async () => {
         const res = await callAPI('/card');
         const parsedRes = await res.json();
@@ -75,20 +73,25 @@ function useAPI() {
       }
     },
     borrow: {
-      get: async (uuid: string) => {
-
-      },
       getMany: async () => {
         const res = await callAPI('/borrow');
         const parsedRes = await res.json();
         if (!res.ok) throw parsedRes;
-        return parsedRes as Borrow[];
+        return parsedRes.map((b: Borrow) => parseBorrow(b)) as Borrow[];
       },
-      update: () => {
-
+      returnBook: async (uuid: string) => {
+        const res = await callAPI(`/borrow/${uuid}`, 'POST');
+        const parsedRes = await res.json();
+        if (!res.ok) throw parsedRes;
       },
-      create: () => {
-
+      create: async (data: BorrowBookForm) => {
+        const req = new FormData();
+        req.append('bno', data.bno);
+        req.append('cno', data.cno);
+        const res = await callAPI('/borrow', 'POST', req);
+        const parsedRes = await res.json();
+        if (!res.ok) throw parsedRes;
+        return parseBorrow(parsedRes) as Borrow;
       },
     }
   };

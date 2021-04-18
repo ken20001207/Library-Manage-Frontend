@@ -5,7 +5,7 @@ import useAPI from '@hooks/useAPI';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import NewBookModal from '@components/NewBookModal';
 
-const { Column, HeaderCell, Cell, Pagination } = Table;
+const { Column, HeaderCell, Cell } = Table;
 
 function BookListPage() {
   const API = useAPI();
@@ -101,10 +101,23 @@ function BookListPage() {
           <Cell>
             {(rowData: Book) => {
               return (
-                <span>
-                  <a> 编辑 </a> |{' '}
-                  <a onClick={() => deleteBook(rowData.bookNumber)}> 删除 </a>
-                </span>
+                <div>
+                  <Button
+                    size="xs"
+                    style={{ marginRight: 12 }}
+                    appearance="primary"
+                    onClick={() => deleteBook(rowData.bookNumber)}
+                  >
+                    编辑
+                  </Button>
+                  <Button
+                    size="xs"
+                    appearance="subtle"
+                    onClick={() => deleteBook(rowData.bookNumber)}
+                  >
+                    删除
+                  </Button>
+                </div>
               );
             }}
           </Cell>

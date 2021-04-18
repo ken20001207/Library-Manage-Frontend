@@ -33,7 +33,8 @@ export interface UpdateCardForm {
 }
 
 export interface BorrowBookForm {
-
+  bno: string
+  cno: string
 }
 
 export interface ReturnBookForm {

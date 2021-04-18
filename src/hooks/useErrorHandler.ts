@@ -1,8 +1,5 @@
 import { Notification } from 'rsuite';
 
-enum Error {
-}
-
 export const useErrorHandler = () => {
 
   const handleError = (err: any) => {
@@ -32,7 +29,21 @@ export const useErrorHandler = () => {
       }
     }
 
-    switch (err.message) {
+    switch (err.code) {
+    case 'CARD_NOT_FOUND':
+      Notification.error({
+        title: '发生错误',
+        description: '卡号不存在，请确认后再试一次',
+        placement: 'bottomStart'
+      });
+      break;
+    case 'BOOK_NOT_FOUND':
+      Notification.error({
+        title: '发生错误',
+        description: '书号不存在，请确认后再试一次',
+        placement: 'bottomStart'
+      });
+      break;
     default:
       let displayCode = '';
       if (typeof err === 'string') displayCode = err;

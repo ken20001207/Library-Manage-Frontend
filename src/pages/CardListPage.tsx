@@ -6,7 +6,7 @@ import { Button, Icon, Row, Table } from 'rsuite';
 import Card from '@src/models/Card';
 import NewCardModal from '@components/NewCardModal';
 
-const { Column, HeaderCell, Cell, Pagination } = Table;
+const { Column, HeaderCell, Cell } = Table;
 
 function CardListPage() {
   const API = useAPI();
@@ -72,19 +72,19 @@ function CardListPage() {
           <Cell dataKey="cardNumber"/>
         </Column>
 
-        <Column width={200} fixed>
+        <Column width={80} fixed>
           <HeaderCell>姓名</HeaderCell>
           <Cell dataKey="name"/>
         </Column>
 
-        <Column width={100}>
+        <Column width={120}>
           <HeaderCell>单位</HeaderCell>
           <Cell dataKey="department"/>
         </Column>
 
-        <Column width={200}>
+        <Column width={80}>
           <HeaderCell>类型</HeaderCell>
-          <Cell dataKey="type"/>
+          <Cell>{(c: Card) => c.type === 'T' ? '教师' : '学生'}</Cell>
         </Column>
 
         <Column width={120} fixed="right">
@@ -92,10 +92,23 @@ function CardListPage() {
           <Cell>
             {(rowData: Book) => {
               return (
-                <span>
-                  <a> 编辑 </a> |{' '}
-                  <a onClick={() => deleteCard(rowData.bookNumber)}> 删除 </a>
-                </span>
+                <div>
+                  <Button
+                    size="xs"
+                    style={{ marginRight: 12 }}
+                    appearance="primary"
+                    onClick={() => deleteCard(rowData.bookNumber)}
+                  >
+                    编辑
+                  </Button>
+                  <Button
+                    size="xs"
+                    appearance="subtle"
+                    onClick={() => deleteCard(rowData.bookNumber)}
+                  >
+                    删除
+                  </Button>
+                </div>
               );
             }}
           </Cell>

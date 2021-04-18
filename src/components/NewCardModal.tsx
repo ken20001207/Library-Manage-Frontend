@@ -51,6 +51,7 @@ function NewCardModal(props: NewCardModalProps) {
         <TextField
           name="type"
           accepter={SelectPicker}
+          searchable={false}
           cleanable={false}
           data={[{ label: '教师', value: 'T' }, { label: '学生', value: 'S' }]}
           label="类型"/>
