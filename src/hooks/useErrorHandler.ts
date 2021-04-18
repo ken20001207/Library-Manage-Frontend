@@ -44,6 +44,13 @@ export const useErrorHandler = () => {
         placement: 'bottomStart'
       });
       break;
+    case 'BOOK_OUT_OF_STOCK':
+      Notification.error({
+        title: '发生错误',
+        description: '该书已无库存',
+        placement: 'bottomStart'
+      });
+      break;
     default:
       let displayCode = '';
       if (typeof err === 'string') displayCode = err;

@@ -100,9 +100,11 @@ function BorrowListPage() {
           <Cell dataKey="cardNumber"/>
         </Column>
 
-        <Column width={120}>
+        <Column width={160}>
           <HeaderCell>书号</HeaderCell>
-          <Cell dataKey="bookNumber"/>
+          <Cell>{(d: Borrow) => !d.bookNumber
+            ? '（书籍已被删除）'
+            : d.bookNumber}</Cell>
         </Column>
 
         <Column width={200}>

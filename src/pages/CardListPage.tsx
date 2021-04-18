@@ -47,9 +47,6 @@ function CardListPage() {
         onClick={() => setCreatingCard(true)}>
         <Icon icon="plus"/>核发新借书证
       </Button>
-      <Button appearance="primary">
-        <Icon icon="download"/>批量导入借书证
-      </Button>
     </Row>
 
     <div style={{ borderRadius: 24, padding: 18, backgroundColor: 'white' }}>

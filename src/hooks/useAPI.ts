@@ -7,6 +7,19 @@ import {
 } from '@src/models/Forms';
 import Card from '@src/models/Card';
 import Borrow, { parseBorrow } from '@src/models/Borrow';
+import { GetManyBookQueryParams } from '@src/models/Querys';
+
+const camelToSnakeCase = (str: string) =>
+  str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+
+function withQuery(path: string, query: Object) {
+  let newPath = path + '?';
+  Object.entries(query).forEach(
+    ([key, value]) =>
+      newPath += `&${camelToSnakeCase(key)}=${value}`
+  );
+  return newPath;
+}
 
 function useAPI() {
 
@@ -17,8 +30,8 @@ function useAPI() {
 
   return {
     book: {
-      getMany: async () => {
-        const res = await callAPI('/book');
+      getMany: async (query: GetManyBookQueryParams) => {
+        const res = await callAPI(withQuery('/book', query));
         const parsedRes = await res.json();
         if (!res.ok) throw parsedRes;
         return parsedRes as Book[];
