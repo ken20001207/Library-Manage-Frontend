@@ -3,7 +3,8 @@ import Book from '@src/models/Book';
 import {
   BorrowBookForm,
   CreateBookForm,
-  CreateCardForm
+  CreateCardForm,
+  UpdateBookForm
 } from '@src/models/Forms';
 import Card from '@src/models/Card';
 import Borrow, { parseBorrow } from '@src/models/Borrow';
@@ -36,8 +37,21 @@ function useAPI() {
         if (!res.ok) throw parsedRes;
         return parsedRes as Book[];
       },
-      update: () => {
-
+      update: async (bno: string, data: UpdateBookForm) => {
+        const req = new FormData();
+        req.append('title', data.title);
+        req.append('press', data.press);
+        req.append('year', data.year);
+        req.append('city', data.city);
+        req.append('stock', data.stock.toString());
+        req.append('author', data.author);
+        req.append('category', data.category);
+        req.append('price', data.price.toString());
+        req.append('total', data.total.toString());
+        const res = await callAPI(`/book/${bno}`, 'POST', req);
+        const parsedRes = await res.json();
+        if (!res.ok) throw parsedRes;
+        return parsedRes as Book;
       },
       create: async (data: CreateBookForm) => {
         const req = new FormData();

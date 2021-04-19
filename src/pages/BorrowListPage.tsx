@@ -76,7 +76,7 @@ function BorrowListPage() {
           <ControlLabel>书号</ControlLabel>
           <FormControl name="bno" style={{ width: 160 }}/>
         </FormGroup>
-        <Button appearance="primary" onClick={createBorrow}>确认</Button>
+        <Button appearance="primary" onClick={createBorrow}>确认借出</Button>
       </Form>
     </Row>
 

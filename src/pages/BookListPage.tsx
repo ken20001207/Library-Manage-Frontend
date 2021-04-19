@@ -19,6 +19,7 @@ import { useErrorHandler } from '@hooks/useErrorHandler';
 import NewBookModal from '@components/NewBookModal';
 import { API_URL } from '@src/config';
 import { GetManyBookQueryParams } from '@src/models/Querys';
+import EditBookModal from '@components/EditBookModal';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -29,7 +30,7 @@ const defaultQueries: GetManyBookQueryParams = {
   city: '',
   press: '',
   priceBottom: 0,
-  priceTop: 10000,
+  priceTop: 1000,
   title: '',
   yearBottom: 0,
   yearTop: 2023
@@ -44,6 +45,7 @@ function BookListPage() {
   const [uploadingFiles, setUploadingFiles] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [queries, setQueries] = useState(defaultQueries);
+  const [editingBook, setEditingBook] = useState<Book>();
 
   async function refresh(queries: GetManyBookQueryParams) {
     setLoading(true);
@@ -151,12 +153,12 @@ function BookListPage() {
 
       <FormGroup>
         <ControlLabel>价格下限</ControlLabel>
-        <FormControl name="priceBottom" style={{ width: 80 }}/>
+        <FormControl name="priceBottom" style={{ width: 60 }}/>
       </FormGroup>
 
       <FormGroup>
         <ControlLabel>价格上限</ControlLabel>
-        <FormControl name="priceTop" style={{ width: 80 }}/>
+        <FormControl name="priceTop" style={{ width: 60 }}/>
       </FormGroup>
 
       <Button appearance="primary" onClick={() => refresh(queries)}>查询</Button>
@@ -204,7 +206,7 @@ function BookListPage() {
           <Cell dataKey="press"/>
         </Column>
 
-        <Column width={100}>
+        <Column width={80}>
           <HeaderCell>年份</HeaderCell>
           <Cell dataKey="year"/>
         </Column>
@@ -214,7 +216,7 @@ function BookListPage() {
           <Cell dataKey="price"/>
         </Column>
 
-        <Column width={100}>
+        <Column width={80}>
           <HeaderCell>库存</HeaderCell>
           <Cell>{(b: Book) => <p>{b.stock}/{b.total}</p>}</Cell>
         </Column>
@@ -229,7 +231,7 @@ function BookListPage() {
                     size="xs"
                     style={{ marginRight: 12 }}
                     appearance="primary"
-                    onClick={() => deleteBook(rowData.bookNumber)}
+                    onClick={() => setEditingBook(rowData)}
                   >
                     编辑
                   </Button>
@@ -255,6 +257,14 @@ function BookListPage() {
         refresh(queries);
         setCreatingBook(false);
       }}/>
+
+    <EditBookModal
+      onCancel={() => setEditingBook(undefined)}
+      onEdited={() => {
+        refresh(queries);
+        setEditingBook(undefined);
+      }}
+      editingBook={editingBook}/>
   </div>;
 }
 
